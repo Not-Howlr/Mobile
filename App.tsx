@@ -1,10 +1,23 @@
 import React from "react";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 
-import { HomeScreen } from "./App/Screens/HomeScreen";
+import { Navigator } from "./App/Components/Navigator";
+import { Colors } from "./App/Constants/Colors";
+
+const theme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		primary: Colors.Primary,
+		background: Colors.Black
+	}
+};
 
 const App: React.FC = (): JSX.Element => {
 	return (
-		<HomeScreen />
+		<NavigationContainer theme={theme}>
+			<Navigator />
+		</NavigationContainer>
 	);
 };
 

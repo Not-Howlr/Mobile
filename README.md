@@ -2,6 +2,7 @@
 expo init <project name>
 expo build:android // build apk or aab
 expo upload:android // push to app store
+expo update
 expo publish // publish to expo server
 ```
 ```

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Not-Howlr-Frontend",
-    "slug": "Not-Howlr-Frontend",
+    "name": "Not-Howlr-Mobile",
+    "slug": "Not-Howlr-Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "description": "",
-    "icon": "./App/Assets/icon.png",
+    "icon": "./App/Assets/puppy.png",
     "splash": {
       "image": "./App/Assets/splash.png",
       "resizeMode": "cover",
@@ -22,9 +22,9 @@
     },
     "android": {
       "versionCode": 1,
-      "package": "com.howlr.frontend",
+      "package": "com.howlr.mobile",
       "adaptiveIcon": {
-        "foregroundImage": "./App/Assets/adaptive-icon.png",
+        "foregroundImage": "./App/Assets/puppy.png",
         "backgroundColor": "#FFFFFF"
       }
     },
