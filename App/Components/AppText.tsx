@@ -4,16 +4,18 @@ import { StyleSheet, Text } from "react-native";
 import { Colors, Fonts } from "../Constants/Colors";
 
 interface IAppTextProps {
+	children: React.ReactNode,
 	size?: number,
-	children: React.ReactNode
+	color?: string
 }
 
 export const AppText: React.FC<IAppTextProps> = ({
 	size = 15,
+	color = Colors.White,
 	children
 }: IAppTextProps): JSX.Element => {
 	return (
-		<Text style={[{ fontSize: size }, styles.text]}>
+		<Text style={[{ color, fontSize: size, }, styles.text]}>
 			{children}
 		</Text>
 	);
@@ -21,9 +23,7 @@ export const AppText: React.FC<IAppTextProps> = ({
 
 const styles = StyleSheet.create({
 	text: {
-		color: Colors.White,
 		textAlign: "center",
 		fontFamily: Fonts.SansSerifThin,
-		fontWeight: "bold"
 	},
 });

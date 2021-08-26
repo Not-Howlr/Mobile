@@ -4,11 +4,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { HomeScreen } from "../Screens/HomeScreen";
-import { SettingsScreen } from "../Screens/SettingsScreen";
-import { MessagesScreen } from "../Screens/MessagesScreen";
-import { AccountScreen } from "../Screens/AccountScreen";
-import { Colors } from "../Constants/Colors";
+import { HomeScreen } from "../../Screens/HomeScreen";
+import { SettingsScreen } from "../../Screens/SettingsScreen";
+import { MessagesScreen } from "../../Screens/MessagesScreen";
+import { AccountScreen } from "../../Screens/AccountScreen";
+import { Colors } from "../../Constants/Colors";
 
 const Tab = createBottomTabNavigator();
 
