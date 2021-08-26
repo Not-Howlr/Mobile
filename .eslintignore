@@ -1,0 +1,6 @@
+.next/**/*
+.vscode/**/*
+.legacy/**/*
+.public/**/*
+.styles/**/*
+babel.config.js

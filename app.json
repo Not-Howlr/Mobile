@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Not-Howlr-Frontend",
+    "slug": "Not-Howlr-Frontend",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "description": "",
+    "icon": "./App/Assets/icon.png",
+    "splash": {
+      "image": "./App/Assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.howlr.frontend",
+      "adaptiveIcon": {
+        "foregroundImage": "./App/Assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./App/Assets/favicon.png"
+    }
+  }
+}
