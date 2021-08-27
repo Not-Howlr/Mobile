@@ -10,6 +10,7 @@ import { AppTextInput } from "../Components/AppTextInput";
 import { ErrorMessage } from "../Components/Form/ErrorMessage";
 import { SubmitButton } from "../Components/Form/SubmitButton";
 import { Colors } from "../Constants/Colors";
+import { Api } from "../Api/BaseClient";
 
 // const validationSchema = Yup.object().shape({
 // 	email: Yup.string().required().email().label("Email"),
@@ -26,12 +27,16 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 	const [login, setLogin] = useState<ILogin>({ username: null, password: null });
 	const [loading, setLoading] = useState(false);
 
-	const HandleSubmit = () => {
-		setLoading(true);
-		setTimeout(() => {
-			console.log(login);
+	const HandleSubmit = async () => {
+		try {
+			setLoading(true);
+			const { data } = await Api.client.post("user/login", login);
+			console.log("response", data);
 			setLoading(false);
-		}, 2000);
+		} catch (error) {
+			setLoading(false);
+			console.log("error", error);
+		}
 	};
 
 	return (
@@ -72,7 +77,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 					color={Colors.Primary}
 					animation="fade"
 					size="large"
-					textStyle={{color: Colors.White}}
+					textStyle={{ color: Colors.White }}
 					textContent={"logging in..."}
 				/>
 			</View>

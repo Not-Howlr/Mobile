@@ -6,7 +6,7 @@ import { Colors } from "../Constants/Colors";
 
 interface IAppButtonProps {
 	title: string,
-	onPress: (event: any) => void | undefined,
+	onPress: (event: any) => void | undefined | Promise<any>,
 	disabled?: boolean,
 	color?: string
 }

@@ -7,7 +7,7 @@ import { AppButton } from "../AppButton";
 interface ISubmitButtonProps {
 	title: string,
 	disabled: boolean,
-	handleSubmit: (event: any) => void | undefined
+	handleSubmit: (event: any) => void | undefined | Promise<any>
 }
 
 export const SubmitButton: React.FC<ISubmitButtonProps> = ({ title, handleSubmit, disabled }: ISubmitButtonProps): JSX.Element => {
