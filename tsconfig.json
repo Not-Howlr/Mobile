@@ -1,8 +1,14 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-	"esModuleInterop": true,
-    "jsx": "react",
-    "strict": true
-  }
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"target": "ESNext",
+		"jsx": "react",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"strict": true
+	}
 }

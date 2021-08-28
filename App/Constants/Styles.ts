@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import { DefaultTheme } from "@react-navigation/native";
 
 import { Colors } from "./Colors";
 
@@ -16,5 +17,14 @@ export const DefaultStyles = {
 				fontFamily: "Roboto"
 			}
 		})
+	}
+};
+
+export const navigatorTheme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		primary: Colors.Primary,
+		background: Colors.Black
 	}
 };

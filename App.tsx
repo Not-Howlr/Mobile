@@ -1,26 +1,39 @@
-import React from "react";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { Provider, useSelector } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
 
-// import { Navigator } from "./App/Components/Navigation/Navigator";
-import { Colors } from "./App/Constants/Colors";
+import { Navigator } from "./App/Components/Navigation/Navigator";
 import { AuthNavigator } from "./App/Components/Navigation/AuthNavigation";
-
-const theme = {
-	...DefaultTheme,
-	colors: {
-		...DefaultTheme.colors,
-		primary: Colors.Primary,
-		background: Colors.Black
-	}
-};
+import { useApi } from "./App/Hooks/useApi";
+import { RootState, store } from "./App/Store/Store";
+import { Loader } from "./App/Components/Loader";
+import { navigatorTheme } from "./App/Constants/Styles";
 
 const App: React.FC = (): JSX.Element => {
+
+	const user = useSelector((state: RootState) => state.user);
+	const { loading, auth, Refresh } = useApi();
+
+	useEffect(() => {
+		Refresh();
+		console.log(user);
+	}, [user]);
+
 	return (
-		<NavigationContainer theme={theme}>
-			{/* <Navigator /> */}
-			<AuthNavigator />
+		<NavigationContainer theme={navigatorTheme}>
+			{
+				loading ? <Loader visible={loading} /> : auth ? <Navigator /> : <AuthNavigator />
+			}
 		</NavigationContainer>
 	);
 };
 
-export default App;
+const Wrapper = (): JSX.Element => {
+	return (
+		<Provider store={store}>
+			<App />
+		</Provider>
+	);
+};
+
+export default Wrapper;

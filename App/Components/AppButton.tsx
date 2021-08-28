@@ -27,7 +27,7 @@ export const AppButton: React.FC<IAppButtonProps> = ({
 const styles = StyleSheet.create({
 	button: {
 		backgroundColor: Colors.Primary,
-		borderRadius: 25,
+		borderRadius: 15,
 		justifyContent: "center",
 		alignItems: "center",
 		padding: 15,
