@@ -5,7 +5,6 @@ import { View } from "react-native";
 import { IUser } from "@not-howlr/types";
 
 import { AppButton } from "../Components/AppButton";
-import { AppScreen } from "../Components/AppScreen";
 import { AppText } from "../Components/AppText";
 import { Loader } from "../Components/Loader";
 import { useApi } from "../Hooks/useApi";
@@ -22,17 +21,15 @@ export const AccountScreen: React.FC = (): JSX.Element => {
 	}, []);
 
 	return (
-		<AppScreen>
-			<View style={{ maxWidth: 200 }}>
-				<AppText size={20}>
-					{user?.username}
-				</AppText>
-				<AppText size={30}>
+		<View style={{ maxWidth: 200 }}>
+			<AppText size={20}>
+				{user?.username}
+			</AppText>
+			<AppText size={30}>
 					account page
-				</AppText>
-				<AppButton title="logout" onPress={Logout} />
-			</View>
+			</AppText>
+			<AppButton title="logout" onPress={Logout} />
 			<Loader visible={loading} />
-		</AppScreen>
+		</View>
 	);
 };

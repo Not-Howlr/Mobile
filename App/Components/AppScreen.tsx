@@ -17,7 +17,7 @@ export const AppScreen: React.FC<IAppScreenProps> = ({
 			<View style={styles.container}>
 				{ children }
 			</View>
-			<StatusBar style="auto" />
+			<StatusBar backgroundColor={Colors.White} />
 		</SafeAreaView>
 	);
 };

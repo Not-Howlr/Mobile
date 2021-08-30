@@ -9,6 +9,7 @@ import { navigatorTheme } from "../../Constants/Styles";
 import { Loader } from "../Loader";
 import { Navigator } from "./Navigator";
 import { AuthNavigator } from "./AuthNavigation";
+import { AppScreen } from "../AppScreen";
 
 
 export const NavigationWrapper: React.FC = (): JSX.Element => {
@@ -23,9 +24,11 @@ export const NavigationWrapper: React.FC = (): JSX.Element => {
 	return (
 		<NavigationContainer theme={navigatorTheme}>
 			{
-				loading ? <Loader visible={loading} /> : (
-					auth ? <Navigator /> : <AuthNavigator />
-				)
+				loading ? (
+					<AppScreen>
+						<Loader visible={loading} />
+					</AppScreen>)
+					: (auth ? <Navigator /> : <AuthNavigator />)
 			}
 		</NavigationContainer>
 	);

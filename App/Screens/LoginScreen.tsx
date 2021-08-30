@@ -17,7 +17,7 @@ export interface ILogin {
 export const LoginScreen: React.FC = (): JSX.Element => {
 
 	const [login, setLogin] = useState<ILogin>({ username: null, password: null });
-	const{ loading, Login, error } = useApi();
+	const { loading, Login, error } = useApi();
 
 	return (
 		<AppScreen>
@@ -52,8 +52,8 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 					title="Login"
 					handleSubmit={() => Login(login)}
 				/>
-				<Loader visible={loading} />
 			</View>
+			<Loader visible={loading} />
 		</AppScreen>
 	);
 };

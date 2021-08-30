@@ -1,5 +1,5 @@
 import React from "react";
-import Spinner from "react-native-loading-spinner-overlay";
+import { ActivityIndicator, View } from "react-native";
 
 import { Colors } from "../Constants/Colors";
 
@@ -7,15 +7,12 @@ interface ILoaderProps {
 	visible: boolean
 }
 
-export const Loader: React.FC<ILoaderProps> = ({ visible }: ILoaderProps): JSX.Element => {
+export const Loader: React.FC<ILoaderProps> = ({ visible }: ILoaderProps): JSX.Element | null => {
+	if (!visible) return null;
+
 	return (
-		<Spinner
-			visible={visible}
-			color={Colors.Primary}
-			animation="fade"
-			size="large"
-			textStyle={{ color: Colors.White }}
-			textContent={""}
-		/>
+		<View style={{width: "100%", alignItems: "center", height: "100%", justifyContent: "center", position: "absolute"}}>
+			<ActivityIndicator color={Colors.Primary} size={70} animating={visible} />
+		</View>
 	);
 };

@@ -9,6 +9,7 @@ import { SettingsScreen } from "../../Screens/SettingsScreen";
 import { MessagesScreen } from "../../Screens/MessagesScreen";
 import { AccountScreen } from "../../Screens/AccountScreen";
 import { Colors } from "../../Constants/Colors";
+import { AppScreen } from "../AppScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,6 +37,7 @@ export const Navigator: React.FC = (): JSX.Element => {
 		<Tab.Navigator
 			screenOptions={{
 				headerShown: true,
+				title: "",
 				headerTintColor: Colors.Primary,
 				headerStyle: { backgroundColor: Colors.DarkBlack },
 				tabBarStyle: { backgroundColor: Colors.DarkBlack },
@@ -47,6 +49,7 @@ export const Navigator: React.FC = (): JSX.Element => {
 						key={index}
 						name={route.name}
 						options={{
+							title: "",
 							tabBarIcon: ({ color, size }: ITabProps) =>
 								<MaterialCommunityIcons
 									name={route.icon}
@@ -55,7 +58,11 @@ export const Navigator: React.FC = (): JSX.Element => {
 								/>
 						}}
 					>
-						{() => <route.component />}
+						{() => (
+							<AppScreen>
+								<route.component />
+							</AppScreen>
+						)}
 					</Tab.Screen>
 				))
 			}
