@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/display-name */
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 

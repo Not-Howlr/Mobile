@@ -1,6 +1,7 @@
-import { IUser } from "../Reducers/UserReducer";
+import { IUser } from "@not-howlr/types";
+
 import { store } from "../Store";
 
-export const getUser = (): { user: IUser | null } => {
+export const getUser = (): { user: IUser } => {
 	return store.getState();
 };

@@ -1,5 +1,7 @@
+import { IUser } from "@not-howlr/types";
+
 import { UserTypes } from "../ActionTypes/User";
-import { IUser, IUserAction } from "../Reducers/UserReducer";
+import { IUserAction } from "../Reducers/UserReducer";
 
 export const userAdd = (user: IUser): IUserAction => ({
 	type: UserTypes.ADD,
@@ -11,6 +13,11 @@ export const userAdd = (user: IUser): IUserAction => ({
 export const userRemove = (): IUserAction => ({
 	type: UserTypes.REMOVE,
 	payload: {
-		user: null
+		user: {
+			uid: "",
+			username: "",
+			token_version: 0,
+			is_verified: false
+		}
 	}
 });

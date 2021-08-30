@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-// import * as Yup from "yup";
 
 import { AppScreen } from "../Components/AppScreen";
 import { AppText } from "../Components/AppText";
 import { AppTextInput } from "../Components/AppTextInput";
-// import { AppForm } from "../Components/Form/AppForm";
 import { ErrorMessage } from "../Components/Form/ErrorMessage";
 import { SubmitButton } from "../Components/Form/SubmitButton";
 import { Loader } from "../Components/Loader";
 import { useApi } from "../Hooks/useApi";
-
-// const validationSchema = Yup.object().shape({
-// 	email: Yup.string().required().email().label("Email"),
-// 	password: Yup.string().required().min(4).label("Password")
-// });
 
 export interface ILogin {
 	username: string | null,
@@ -24,7 +17,7 @@ export interface ILogin {
 export const LoginScreen: React.FC = (): JSX.Element => {
 
 	const [login, setLogin] = useState<ILogin>({ username: null, password: null });
-	const{ loading, Login } =  useApi();
+	const{ loading, Login, error } = useApi();
 
 	return (
 		<AppScreen>
@@ -42,7 +35,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 					onChangeText={username => setLogin({ ...login, username })}
 					textContentType="emailAddress"
 				/>
-				<ErrorMessage visible={false} error="generic error" />
+				<ErrorMessage visible={error !== undefined} error={error || "network error"} />
 				<AppTextInput
 					autoCapitalize="none"
 					disabled={loading}
@@ -53,7 +46,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 					onChangeText={password => setLogin({ ...login, password })}
 					textContentType="password"
 				/>
-				<ErrorMessage visible={false} error="generic error" />
+				<ErrorMessage visible={error !== undefined} error={error || "network error"} />
 				<SubmitButton
 					disabled={!login.password || !login.username || loading}
 					title="Login"

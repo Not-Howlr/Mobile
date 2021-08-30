@@ -19,7 +19,7 @@ interface ITabProps {
 
 interface IRouteProps {
 	name: string,
-	component: React.FC
+	component: React.FC<any>,
 	icon: any
 }
 
@@ -31,6 +31,7 @@ const Routes = [
 ] as IRouteProps[];
 
 export const Navigator: React.FC = (): JSX.Element => {
+
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -45,7 +46,6 @@ export const Navigator: React.FC = (): JSX.Element => {
 					<Tab.Screen
 						key={index}
 						name={route.name}
-						component={route.component}
 						options={{
 							tabBarIcon: ({ color, size }: ITabProps) =>
 								<MaterialCommunityIcons
@@ -54,7 +54,9 @@ export const Navigator: React.FC = (): JSX.Element => {
 									size={size}
 								/>
 						}}
-					/>
+					>
+						{() => <route.component />}
+					</Tab.Screen>
 				))
 			}
 		</Tab.Navigator>

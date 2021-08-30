@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUser } from "@not-howlr/types";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Api } from "../Api/BaseClient";
 import { ILogin } from "../Screens/LoginScreen";
 import { userAdd, userRemove } from "../Store/Actions/User";
-import { IUser } from "../Store/Reducers/UserReducer";
-// import { getUser } from "../Store/Dispatchers/User";
-// import { IUser } from "../Store/Reducers/UserReducer";
+import { KeyNames, RemoveAsync, SaveAsync } from "../Store/Storage";
 
 interface IUseApi {
 	loading: boolean,
 	auth: boolean,
-	// user: IUser | undefined,
+	error: string | undefined,
 	Refresh: () => Promise<void>
 	Logout: () => Promise<void>,
 	Login: (login: ILogin) => Promise<void>
@@ -28,12 +27,14 @@ interface IApiResponse {
 
 export const useApi = (): IUseApi => {
 	const dispatch = useDispatch();
+	const [error, setError] = useState<string | undefined>();
 	const [loading, setLoading] = useState(false);
 	const [auth, setAuth] = useState(false);
 
-	const finishAuth = (isAuth: boolean) => {
-		setLoading(false);
+	const finishAuth = (isAuth: boolean, error: string | undefined = undefined) => {
 		setAuth(isAuth);
+		setError(error);
+		setLoading(false);
 	};
 
 	const Refresh = async () => {
@@ -41,11 +42,12 @@ export const useApi = (): IUseApi => {
 			setLoading(true);
 			const { data } = await Api.client.post("user/refresh", {}) as IApiResponse;
 			if (data.ok) {
+				await SaveAsync(KeyNames.USER, data.user);
 				return finishAuth(true);
 			}
-			finishAuth(false);
+			finishAuth(false, "user not found");
 		} catch (error) {
-			finishAuth(false);
+			finishAuth(false, "an error has occured");
 			console.log(error);
 		}
 	};
@@ -59,11 +61,10 @@ export const useApi = (): IUseApi => {
 				dispatch(userAdd(data.user));
 				return;
 			}
-			dispatch(userRemove());
-			finishAuth(false);
+			finishAuth(false, "incorrect username / password");
 		} catch (error) {
 			dispatch(userRemove());
-			finishAuth(false);
+			finishAuth(false, "an error has occured");
 			console.log("error", error);
 		}
 	};
@@ -72,8 +73,9 @@ export const useApi = (): IUseApi => {
 		try {
 			setLoading(true);
 			await Api.client.post("user/logout", {}) as IApiResponse;
-			finishAuth(false);
+			await RemoveAsync(KeyNames.USER);
 			dispatch(userRemove());
+			finishAuth(false);
 		} catch (error) {
 			dispatch(userRemove());
 			finishAuth(false);
@@ -84,6 +86,7 @@ export const useApi = (): IUseApi => {
 	return {
 		loading,
 		auth,
+		error,
 		Refresh,
 		Logout,
 		Login

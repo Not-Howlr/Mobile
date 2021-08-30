@@ -1,28 +1,31 @@
-import { UserTypes } from "../ActionTypes/User";
+import { IUser } from "@not-howlr/types";
 
-export interface IUser {
-    uid: string;
-    username: string;
-    token_version: number;
-    is_verified: boolean;
-}
+import { UserTypes } from "../ActionTypes/User";
 
 export interface IUserAction {
 	type: UserTypes,
-	payload: {
-		user: IUser | null
-	}
+	payload: { user: IUser }
 }
 
-let user: IUser | null = null;
+let user: IUser = {
+	uid: "",
+	username: "",
+	token_version: 0,
+	is_verified: false
+};
 
-export const userReducer = (state = user, action: IUserAction): IUser | null => {
+export const userReducer = (state = user, action: IUserAction): IUser => {
 	if(action.type === UserTypes.ADD) {
 		user = action.payload.user;
 		return user;
 	}
 	else if(action.type === UserTypes.REMOVE) {
-		user = null;
+		user = {
+			uid: "",
+			username: "",
+			token_version: 0,
+			is_verified: false,
+		};
 		return user;
 	}
 	else return state;
