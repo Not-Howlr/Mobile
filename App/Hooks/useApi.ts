@@ -12,6 +12,7 @@ interface IUseApi {
 	loading: boolean,
 	auth: boolean,
 	error: string | undefined,
+	setError: React.Dispatch<React.SetStateAction<string | undefined>>,
 	Refresh: () => Promise<void>
 	Logout: () => Promise<void>,
 	Login: (login: ILogin) => Promise<void>
@@ -87,6 +88,7 @@ export const useApi = (): IUseApi => {
 		loading,
 		auth,
 		error,
+		setError,
 		Refresh,
 		Logout,
 		Login

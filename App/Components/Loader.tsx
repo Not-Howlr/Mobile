@@ -12,7 +12,7 @@ export const Loader: React.FC<ILoaderProps> = ({ visible }: ILoaderProps): JSX.E
 
 	return (
 		<View style={{width: "100%", alignItems: "center", height: "100%", justifyContent: "center", position: "absolute"}}>
-			<ActivityIndicator color={Colors.Primary} size={70} animating={visible} />
+			<ActivityIndicator color={Colors.Purple} size={70} animating={visible} />
 		</View>
 	);
 };

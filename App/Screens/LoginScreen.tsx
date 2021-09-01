@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 
+import { AppButton } from "../Components/AppButton";
 import { AppScreen } from "../Components/AppScreen";
 import { AppText } from "../Components/AppText";
-import { AppTextInput } from "../Components/AppTextInput";
-import { ErrorMessage } from "../Components/Form/ErrorMessage";
-import { SubmitButton } from "../Components/Form/SubmitButton";
+import { FormInput } from "../Components/Form/FormInput";
 import { Loader } from "../Components/Loader";
 import { useApi } from "../Hooks/useApi";
 
@@ -17,7 +16,7 @@ export interface ILogin {
 export const LoginScreen: React.FC = (): JSX.Element => {
 
 	const [login, setLogin] = useState<ILogin>({ username: null, password: null });
-	const { loading, Login, error } = useApi();
+	const { loading, Login, error, setError } = useApi();
 
 	return (
 		<AppScreen>
@@ -25,33 +24,33 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 				<AppText size={30}>
 					LOGIN
 				</AppText>
-				<AppTextInput
+				<FormInput
+					disabled={loading}
+					error={error !== undefined}
+					errorMsg={error}
+					label="username"
 					icon="account"
-					disabled={loading}
-					autoCapitalize="none"
-					autoCorrect={false}
-					keyboardType="email-address"
-					placeholder="username..."
+					onChange={() => setError(undefined)}
 					onChangeText={username => setLogin({ ...login, username })}
-					textContentType="emailAddress"
 				/>
-				<ErrorMessage visible={error !== undefined} error={error || "network error"} />
-				<AppTextInput
-					autoCapitalize="none"
+				<FormInput
 					disabled={loading}
-					autoCorrect={false}
-					icon="lock"
-					placeholder="password..."
-					secureTextEntry={true}
-					onChangeText={password => setLogin({ ...login, password })}
+					error={error !== undefined}
+					errorMsg={error}
+					label="password"
 					textContentType="password"
+					secureTextEntry
+					icon="lock"
+					onChange={() => setError(undefined)}
+					onChangeText={password => setLogin({ ...login, password })}
 				/>
-				<ErrorMessage visible={error !== undefined} error={error || "network error"} />
-				<SubmitButton
+				<AppButton
+					icon="send"
 					disabled={!login.password || !login.username || loading}
-					title="Login"
-					handleSubmit={() => Login(login)}
-				/>
+					onPress={() => Login(login)}
+				>
+					login
+				</AppButton>
 			</View>
 			<Loader visible={loading} />
 		</AppScreen>

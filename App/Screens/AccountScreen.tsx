@@ -9,6 +9,7 @@ import { AppText } from "../Components/AppText";
 import { Loader } from "../Components/Loader";
 import { useApi } from "../Hooks/useApi";
 import { GetAsync, KeyNames } from "../Store/Storage";
+import { AppScreen } from "../Components/AppScreen";
 
 export const AccountScreen: React.FC = (): JSX.Element => {
 	const { Logout, loading } = useApi();
@@ -21,15 +22,20 @@ export const AccountScreen: React.FC = (): JSX.Element => {
 	}, []);
 
 	return (
-		<View style={{ maxWidth: 200 }}>
-			<AppText size={20}>
-				{user?.username}
-			</AppText>
-			<AppText size={30}>
+		<AppScreen>
+			<View style={{ maxWidth: 200 }}>
+				<AppText size={20}>
+					{user?.username}
+				</AppText>
+				<AppText size={30}>
 					account page
-			</AppText>
-			<AppButton title="logout" onPress={Logout} />
-			<Loader visible={loading} />
-		</View>
+				</AppText>
+				<AppButton
+					onPress={Logout}>
+					Logout
+				</AppButton>
+				<Loader visible={loading} />
+			</View>
+		</AppScreen>
 	);
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import Constants from "expo-constants";
 
 import { Colors } from "../Constants/Colors";
 
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	screen: {
-		paddingTop: Constants.statusBarHeight,
 		flex: 1
 	}
 });
