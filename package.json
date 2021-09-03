@@ -7,6 +7,7 @@
     "lint": "eslint --fix --ext .ts,.tsx ."
   },
   "dependencies": {
+    "@expo/ngrok": "^2.5.0",
     "@expo/vector-icons": "^12.0.5",
     "@not-howlr/types": "github:Not-Howlr/Types",
     "@react-navigation/bottom-tabs": "^6.0.5",
@@ -30,6 +31,7 @@
     "react-navigation": "^4.4.4",
     "react-navigation-drawer": "^2.7.1",
     "react-redux": "^7.2.4",
+    "socket.io-client": "^4.2.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
