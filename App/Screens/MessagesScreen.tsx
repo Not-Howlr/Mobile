@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
-import { View } from "react-native";
+import React from "react";
+import { useState } from "react";
+import { Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { WebSocket } from "../Api/SocketClient";
 import { AppScreen } from "../Components/AppScreen";
 
 import { AppText } from "../Components/AppText";
 
+interface IMessage {
+	from: string,
+	content: string,
+	sent: Date
+}
+
 export const MessagesScreen: React.FC = (): JSX.Element => {
 
-	useEffect(() => {
-		WebSocket.io.on("recieve_message", (data) => {
-			alert(data);
-		});
-	}, [WebSocket.io]);
+	const [messages, setMessages] = useState<IMessage[]>();
 
 	return (
 		<AppScreen>
@@ -29,6 +32,13 @@ export const MessagesScreen: React.FC = (): JSX.Element => {
 					})
 				}>send test message</Button>
 			</View>
+			{
+				messages?.map((msg, index) => (
+					<View key={index}>
+						<Text>{msg.from}: {msg.content}</Text>
+					</View>
+				))
+			}
 		</AppScreen>
 	);
 };

@@ -1,6 +1,8 @@
 import connect from "socket.io-client";
 
 import { Endpoints } from "../Constants/Settings";
+import { offline, online } from "../Store/Slices/Online";
+import { store } from "../Store/Store";
 
 export interface INewMessage {
 	to: string,
@@ -20,8 +22,27 @@ export class WebSocket {
 		WebSocket.io.emit("send_message", message);
 	}
 }
+interface IMessage {
+	from: string,
+	content: string,
+	sent: Date
+}
+interface IResponse {
+	ok: boolean,
+	data: IMessage
+}
 
 WebSocket.Connect();
-WebSocket.io.on("connect", () => WebSocket.online = true);
-WebSocket.io.on("disconnect", () => WebSocket.online = false);
+WebSocket.io.on("connect", () => {
+	store.dispatch(online(true));
+});
+WebSocket.io.on("disconnect", () => {
+	store.dispatch(offline());
+});
 WebSocket.io.on("response", (data) => console.log(data));
+WebSocket.io.on("recieve_message", (response: IResponse) => {
+	const { data } = response;
+	console.log(data);
+	alert(`${data.from}:\n${data.content}`);
+	// ^^ store in redux
+});

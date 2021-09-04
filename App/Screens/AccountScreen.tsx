@@ -13,6 +13,8 @@ import { useApi } from "../Hooks/useApi";
 import { GetAsync, KeyNames } from "../Store/Storage";
 import { AppScreen } from "../Components/AppScreen";
 import { WebSocket } from "../Api/SocketClient";
+import { useAppSelector } from "../Store/Hooks";
+import { onlineSelector } from "../Store/Slices/Online";
 
 interface IAccountScreenProps {
 	navigation: NavigatorProps
@@ -23,7 +25,8 @@ export const AccountScreen: React.FC<IAccountScreenProps> = ({
 }: IAccountScreenProps): JSX.Element => {
 	const { Logout, loading } = useApi();
 	const [user, setuser] = useState<IUser>();
-	const [online, setOnline] = useState<boolean>(WebSocket.online);
+	const [online, setOnline] = useState(WebSocket.online);
+	const isOnline = useAppSelector(onlineSelector);
 
 	useEffect((): any => {
 		(async () => {
@@ -31,10 +34,9 @@ export const AccountScreen: React.FC<IAccountScreenProps> = ({
 		})();
 	}, []);
 
-	useEffect((): any => {
-		WebSocket.io.on("disconnect", () => setOnline(false));
-		WebSocket.io.on("connect", () => setOnline(true));
-	}, [WebSocket.io]);
+	useEffect(() => {
+		setOnline(isOnline);
+	}, [isOnline]);
 
 	return (
 		<AppScreen>

@@ -33,19 +33,21 @@ export const Navigator: React.FC = (): JSX.Element => {
 	}, []);
 
 	return (
-		<Drawer.Navigator initialRouteName="Home" screenOptions={{
-			drawerLabelStyle: { color: Colors.White },
-			drawerActiveBackgroundColor: Colors.Purple,
-			drawerStyle: { backgroundColor: Colors.Black },
-			// headerShown: false,
-			header: (props: DrawerHeaderProps) =>
-				<NavigationHeader
-					navigation={props.navigation}
-					layout={props.layout}
-					options={props.options}
-					route={props.route}
-				/>
-		}}>
+		<Drawer.Navigator
+			initialRouteName="Home"
+			screenOptions={{
+				drawerLabelStyle: { color: Colors.White },
+				drawerActiveBackgroundColor: Colors.Purple,
+				drawerStyle: { backgroundColor: Colors.Black },
+				// headerShown: false,
+				header: (props: DrawerHeaderProps) =>
+					<NavigationHeader
+						navigation={props.navigation}
+						layout={props.layout}
+						options={props.options}
+						route={props.route}
+					/>
+			}}>
 			{
 				Routes.map((route, index) => (
 					<Drawer.Screen

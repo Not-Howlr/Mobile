@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IUser } from "@not-howlr/types";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { Api } from "../Api/BaseClient";
 import { ILogin } from "../Screens/LoginScreen";
-import { userAdd, userRemove } from "../Store/Actions/User";
+import { useAppDispatch } from "../Store/Hooks";
+import { add, remove } from "../Store/Slices/User";
 import { KeyNames, RemoveAsync, SaveAsync } from "../Store/Storage";
 
 interface IUseApi {
@@ -27,7 +27,7 @@ interface IApiResponse {
 }
 
 export const useApi = (): IUseApi => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [error, setError] = useState<string | undefined>();
 	const [loading, setLoading] = useState(false);
 	const [auth, setAuth] = useState(false);
@@ -59,12 +59,12 @@ export const useApi = (): IUseApi => {
 			const { data } = await Api.client.post("user/login", login) as IApiResponse;
 			if (data.ok) {
 				finishAuth(true);
-				dispatch(userAdd(data.user));
+				dispatch(add(data.user));
 				return;
 			}
 			finishAuth(false, "incorrect username / password");
 		} catch (error) {
-			dispatch(userRemove());
+			dispatch(remove());
 			finishAuth(false, "an error has occured");
 			console.log("error", error);
 		}
@@ -75,10 +75,10 @@ export const useApi = (): IUseApi => {
 			setLoading(true);
 			await Api.client.post("user/logout", {}) as IApiResponse;
 			await RemoveAsync(KeyNames.USER);
-			dispatch(userRemove());
+			dispatch(remove());
 			finishAuth(false);
 		} catch (error) {
-			dispatch(userRemove());
+			dispatch(remove());
 			finishAuth(false);
 			console.log("error", error);
 		}
