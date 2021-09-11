@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IUser } from "@not-howlr/types";
 import { useState } from "react";
+// import * as yup from "yup";
 
 import { Api } from "../Api/BaseClient";
 import { ILogin } from "../Screens/LoginScreen";
+import { IRegister } from "../Screens/RegisterScreen";
 import { useAppDispatch } from "../Store/Hooks";
+import { clearToken, setToken } from "../Store/Slices/Token";
 import { add, remove } from "../Store/Slices/User";
 import { KeyNames, RemoveAsync, SaveAsync } from "../Store/Storage";
 
@@ -13,7 +16,8 @@ interface IUseApi {
 	auth: boolean,
 	error: string | undefined,
 	setError: React.Dispatch<React.SetStateAction<string | undefined>>,
-	Refresh: () => Promise<void>
+	Refresh: () => Promise<void>,
+	Register: (register: IRegister) => Promise<void>,
 	Logout: () => Promise<void>,
 	Login: (login: ILogin) => Promise<void>
 }
@@ -25,6 +29,12 @@ interface IApiResponse {
 		user: IUser
 	}
 }
+
+// const registerSchema = yup.object().shape({
+// 	username: yup.string().required(),
+// 	email: yup.string().email().required(),
+// 	password: yup.string().min(8).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/).required()
+// });
 
 export const useApi = (): IUseApi => {
 	const dispatch = useAppDispatch();
@@ -39,49 +49,42 @@ export const useApi = (): IUseApi => {
 	};
 
 	const Refresh = async () => {
-		try {
-			setLoading(true);
-			const { data } = await Api.client.post("user/refresh", {}) as IApiResponse;
-			if (data.ok) {
-				await SaveAsync(KeyNames.USER, data.user);
-				return finishAuth(true);
-			}
-			finishAuth(false, "user not found");
-		} catch (error) {
-			finishAuth(false, "an error has occured");
-			console.log(error);
-		}
+		setLoading(true);
+		const { data } = await Api.client.post("user/refresh", {}) as IApiResponse;
+		if (!data.ok) return finishAuth(false, "user not found");
+		dispatch(add(data.user));
+		dispatch(setToken(data.token));
+		await SaveAsync(KeyNames.USER, data.user);
+		await SaveAsync(KeyNames.TOKEN, data.token);
+		finishAuth(true);
 	};
 
 	const Login = async (login: ILogin) => {
-		try {
-			setLoading(true);
-			const { data } = await Api.client.post("user/login", login) as IApiResponse;
-			if (data.ok) {
-				finishAuth(true);
-				dispatch(add(data.user));
-				return;
-			}
-			finishAuth(false, "incorrect username / password");
-		} catch (error) {
-			dispatch(remove());
-			finishAuth(false, "an error has occured");
-			console.log("error", error);
-		}
+		setLoading(true);
+		const { data } = await Api.client.post("user/login", login) as IApiResponse;
+		if (!data.ok) return finishAuth(false, "incorrect username / password");
+		dispatch(setToken(data.token));
+		dispatch(add(data.user));
+		finishAuth(true);
+	};
+
+	const Register = async (register: IRegister) => {
+		setLoading(true);
+		const { data } = await Api.client.post("user/register", register) as IApiResponse;
+		if (!data.ok) return finishAuth(false, "username / email taken");
+		dispatch(setToken(data.token));
+		dispatch(add(data.user));
+		finishAuth(true);
 	};
 
 	const Logout = async () => {
-		try {
-			setLoading(true);
-			await Api.client.post("user/logout", {}) as IApiResponse;
-			await RemoveAsync(KeyNames.USER);
-			dispatch(remove());
-			finishAuth(false);
-		} catch (error) {
-			dispatch(remove());
-			finishAuth(false);
-			console.log("error", error);
-		}
+		setLoading(true);
+		await Api.client.post("user/logout", {}) as IApiResponse;
+		await RemoveAsync(KeyNames.USER);
+		await RemoveAsync(KeyNames.TOKEN);
+		dispatch(clearToken());
+		dispatch(remove());
+		finishAuth(false);
 	};
 
 	return {
@@ -90,6 +93,7 @@ export const useApi = (): IUseApi => {
 		error,
 		setError,
 		Refresh,
+		Register,
 		Logout,
 		Login
 	};

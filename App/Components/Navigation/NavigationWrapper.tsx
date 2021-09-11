@@ -8,15 +8,15 @@ import { Navigator } from "./Navigator";
 import { AuthNavigator } from "./AuthNavigation";
 import { AppScreen } from "../AppScreen";
 import { useAppSelector } from "../../Store/Hooks";
-import { userSelector } from "../../Store/Slices/User";
+import { tokenSelector } from "../../Store/Slices/Token";
 
 export const NavigationWrapper: React.FC = (): JSX.Element => {
-	const user = useAppSelector(userSelector);
+	const token = useAppSelector(tokenSelector);
 	const { loading, auth, Refresh } = useApi();
 
 	useEffect(() => {
 		Refresh();
-	}, [user]);
+	}, [token]);
 
 	return (
 		<NavigationContainer>

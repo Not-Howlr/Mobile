@@ -1,48 +1,43 @@
+import { ClientHandler, ServerHandler, INewMessage } from "@not-howlr/types";
 import connect from "socket.io-client";
 
 import { Endpoints } from "../Constants/Settings";
+import { addMessage } from "../Store/Slices/Messages";
 import { offline, online } from "../Store/Slices/Online";
 import { store } from "../Store/Store";
 
-export interface INewMessage {
-	to: string,
-	content: string,
-	sent: Date
-}
-
 export class WebSocket {
 	public static online: boolean
-	public static io = connect(Endpoints.rtcBaseUrl, { withCredentials: true })
+	public static io = connect(Endpoints.rtcBaseUrl, {
+		withCredentials: true,
+		forceNew: true,
+		reconnection: true,
+		reconnectionDelay: 2000,
+		transports: ["websocket"],
+	})
 
 	public static Connect(): void {
 		WebSocket.io.connect();
 	}
 
-	public static SendMessage(message: INewMessage): void {
-		WebSocket.io.emit("send_message", message);
+	public static SendMessage(message: Partial<INewMessage>): void {
+		WebSocket.io.emit(ServerHandler.SEND_MESSAGE, message);
 	}
 }
-interface IMessage {
-	from: string,
-	content: string,
-	sent: Date
-}
+
 interface IResponse {
 	ok: boolean,
-	data: IMessage
+	data: INewMessage
 }
 
-WebSocket.Connect();
-WebSocket.io.on("connect", () => {
+WebSocket.io.on(ClientHandler.CONNECT, () => {
 	store.dispatch(online(true));
 });
-WebSocket.io.on("disconnect", () => {
+WebSocket.io.on(ClientHandler.DISCONNECT, () => {
 	store.dispatch(offline());
 });
-WebSocket.io.on("response", (data) => console.log(data));
-WebSocket.io.on("recieve_message", (response: IResponse) => {
+// WebSocket.io.on(ServerHandler.RESPONSE, (data) => console.log(data));
+WebSocket.io.on(ServerHandler.RECIEVE_MESSAGE, (response: IResponse) => {
 	const { data } = response;
-	console.log(data);
-	alert(`${data.from}:\n${data.content}`);
-	// ^^ store in redux
+	store.dispatch(addMessage(data));
 });

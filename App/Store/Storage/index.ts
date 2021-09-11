@@ -3,7 +3,8 @@
 import * as SecureStore from "expo-secure-store";
 
 export enum KeyNames {
-	USER = "USER"
+	USER = "USER",
+	TOKEN = "TOKEN"
 }
 
 export const SaveAsync = async (key: KeyNames, value: any): Promise<void> => {

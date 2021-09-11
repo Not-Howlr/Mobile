@@ -10,11 +10,11 @@ import { AppButton } from "../Components/AppButton";
 import { AppText } from "../Components/AppText";
 import { Loader } from "../Components/Loader";
 import { useApi } from "../Hooks/useApi";
-import { GetAsync, KeyNames } from "../Store/Storage";
 import { AppScreen } from "../Components/AppScreen";
 import { WebSocket } from "../Api/SocketClient";
 import { useAppSelector } from "../Store/Hooks";
 import { onlineSelector } from "../Store/Slices/Online";
+import { userSelector } from "../Store/Slices/User";
 
 interface IAccountScreenProps {
 	navigation: NavigatorProps
@@ -27,11 +27,10 @@ export const AccountScreen: React.FC<IAccountScreenProps> = ({
 	const [user, setuser] = useState<IUser>();
 	const [online, setOnline] = useState(WebSocket.online);
 	const isOnline = useAppSelector(onlineSelector);
+	const userState = useAppSelector(userSelector);
 
-	useEffect((): any => {
-		(async () => {
-			setuser(await GetAsync(KeyNames.USER));
-		})();
+	useEffect(() => {
+		setuser(userState);
 	}, []);
 
 	useEffect(() => {

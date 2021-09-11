@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
+import { Button } from "react-native-paper";
 
 import { AppButton } from "../Components/AppButton";
 import { AppScreen } from "../Components/AppScreen";
@@ -13,7 +14,13 @@ export interface ILogin {
 	password: string | null
 }
 
-export const LoginScreen: React.FC = (): JSX.Element => {
+interface ILoginScreenProps {
+	navigation: NavigatorProps
+}
+
+export const LoginScreen: React.FC<ILoginScreenProps> = ({
+	navigation
+}: ILoginScreenProps): JSX.Element => {
 
 	const [login, setLogin] = useState<ILogin>({ username: null, password: null });
 	const { loading, Login, error, setError } = useApi();
@@ -51,6 +58,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 				>
 					login
 				</AppButton>
+				<Button onPress={() => navigation.navigate("RegisterScreen")}>create a new account</Button>
 			</View>
 			<Loader visible={loading} />
 		</AppScreen>
